@@ -1,5 +1,5 @@
 shoutcast2hls:
-    build: .
+    image: akerbis/shoutcast2hls
     volumes:
         - /usr/share/nginx/html
     environment:
