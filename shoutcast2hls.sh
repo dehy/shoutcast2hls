@@ -38,8 +38,8 @@ EOF
 }
 
 function is_array() {
-  local variable_name=$1
-  [[ "$(declare -p $variable_name)" =~ "declare -a" ]]
+    local variable_name=$1
+    [[ "$(declare -p $variable_name)" =~ "declare -a" ]]
 }
 
 if [ $# -eq 0 ]; then
@@ -176,5 +176,4 @@ do
     sleep 60
     echo "Removing files older than 1 minute"
     find $OUTPUT_DIRECTORY -name \*.ts -mmin +1 -delete
-
 done
