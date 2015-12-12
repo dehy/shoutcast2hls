@@ -111,6 +111,7 @@ if [ -z "${PLAYLIST_NAME}" ]; then
 fi
 
 IFS=':' read -a bitrates <<< "$BITRATES"
+echo "Checking bitrates…"
 for bitrate in "${bitrates[@]}"
 do
     if [[ ${bitrate[@]} =~ ^-?[0-9]+$ && ${bitrate[@]} > 0 ]]; then
@@ -135,10 +136,10 @@ case $OUTPUT_FORMAT in
         ;;
 esac
 
-echo "Detecting bitrate for $INPUT_STREAM stream... (it may take a while)"
+echo "Detecting bitrate for $INPUT_STREAM stream… (it may take a while)"
 found_bitrate=$(avprobe -show_format $INPUT_STREAM < /dev/null 2> /dev/null | grep icy-br | cut -d= -f2)
 if [ -z "$found_bitrate" ]; then
-echo "+ Cannot find the bitrate... Are you sure it is a Shoutcast stream ?"
+echo "+ Cannot find the bitrate… Are you sure it is a Shoutcast stream ?"
 exit 1
 fi
 echo "+ Found ${found_bitrate}k"
@@ -159,7 +160,7 @@ do
         bitrate_opt="-b:a ${bitrates[$index]}k"
     fi
 
-    echo "New converter from $INPUT_STREAM to ${stream_playlist}..."
+    echo "New converter from $INPUT_STREAM to ${stream_playlist}…"
     echo "+ Output format: $OUTPUT_FORMAT"
     echo "+ Output bitrate: ${bitrates[$index]}k"
     echo "+ Output playlist file $stream_playlist"
