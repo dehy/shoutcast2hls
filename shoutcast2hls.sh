@@ -24,13 +24,15 @@ function print_usage {
 Usage: ./shoutcast2hls.sh [options] <stream> where options are:
 
         -f <format>    | --output-format <format>       : Output encoding. Possible values are 'mp3', 'aac' or 'copy'.
-                                                          The default is 'copy'.
+                                                          The default value is 'copy'.
         -d <directory> | --output-directory <directory> : Output directory
-                                                          The default is '/tmp'
+                                                          The default value is '/tmp'
         -n <name>      | --name <name>                  : Output playlist name
-                                                          The default is 'playlist'
+                                                          The default value is 'playlist'
         -b <bitrates>  | --bitrates <bitrates>          : List of output bitrates expressed in kilobytes, separated by colons (:)
-                                                          The default is '64:128'
+                                                          The default value is '64:128'
+        -c <time>      | --chunk-time <time>            : Chunck time in seconds for each HLS element
+                                                          The default value is '10'
 
 Example:
         ./shoutcast2hls.sh -d /usr/share/nginx/html -f mp3 -n morow -b 64:128 http://stream.morow.com:8080/morow_hi.aacp
@@ -61,6 +63,10 @@ while [[ $# -gt 1 ]]; do
     key="$1"
 
     case $key in
+        -c|--chunk-time)
+            CHUNK_SIZE="$2"
+            shift # past argument
+            ;;
         -f|--output-format)
             OUTPUT_FORMAT="$2"
             shift # past argument
@@ -108,6 +114,12 @@ fi
 
 if [ -z "${PLAYLIST_NAME}" ]; then
     PLAYLIST_NAME="playlist"
+fi
+
+if [[ $CHUNK_SIZE =~ ^-?[0-9]+$ && $CHUNK_SIZE > 0 ]]; then
+    echo "Chunk time: $CHUNK_SIZE ok"
+else
+    echo "$CHUNK_SIZE is not a valid chunk time number"
 fi
 
 IFS=':' read -a bitrates <<< "$BITRATES"
