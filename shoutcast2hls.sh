@@ -113,9 +113,7 @@ fi
 IFS=':' read -a bitrates <<< "$BITRATES"
 for bitrate in "${bitrates[@]}"
 do
-    # TODO check if is number
-    result=0
-    if [ "$result" != "0" ]; then
+    if ! [[ ${bitrate[@]} =~ '^[0-9]$' ]]; then
         echo  "Not a valid bitrate number"
         print_usage
         exit 1
