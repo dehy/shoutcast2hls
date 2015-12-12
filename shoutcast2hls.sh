@@ -152,21 +152,22 @@ fi
 touch $final_playlist
 echo "#EXTM3U" >> $final_playlist
 
-for index in "${!bitrates[@]}"
+sbitrates=($(printf '%s\n' "${bitrates[@]}"|sort -r -n))
+for index in "${!sbitrates[@]}"
 do
-    stream_playlist="${OUTPUT_DIRECTORY}/${PLAYLIST_NAME}_${bitrates[$index]}.m3u8"
+    stream_playlist="${OUTPUT_DIRECTORY}/${PLAYLIST_NAME}_${sbitrates[$index]}.m3u8"
 
     if [ "$OUTPUT_LIB" != "copy" ]; then
-        bitrate_opt="-b:a ${bitrates[$index]}k"
+        bitrate_opt="-b:a ${sbitrates[$index]}k"
     fi
 
     echo "New converter from $INPUT_STREAM to ${stream_playlist}…"
     echo "+ Output format: $OUTPUT_FORMAT"
-    echo "+ Output bitrate: ${bitrates[$index]}k"
+    echo "+ Output bitrate: ${sbitrates[$index]}k"
     echo "+ Output playlist file $stream_playlist"
     avconv -i "$INPUT_STREAM" -vn -sn -c:a $OUTPUT_LIB $bitrate_opt -hls_time $CHUNK_SIZE $stream_playlist 2> /dev/null &
 
-    echo "#EXT-X-STREAM-INF:BANDWIDTH=${bitrates[$index]}000" >> $final_playlist
+    echo "#EXT-X-STREAM-INF:BANDWIDTH=${sbitrates[$index]}000" >> $final_playlist
     echo "$(basename ${stream_playlist})" >> $final_playlist
 done
 
