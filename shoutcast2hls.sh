@@ -167,7 +167,7 @@ echo "#EXTM3U" >> $final_playlist
 sbitrates=($(printf '%s\n' "${bitrates[@]}"|sort -r -n))
 for index in "${!sbitrates[@]}"
 do
-    stream_playlist="${OUTPUT_DIRECTORY}/${PLAYLIST_NAME}_${sbitrates[$index]}.m3u8"
+    stream_playlist="${OUTPUT_DIRECTORY}/${PLAYLIST_NAME}_${sbitrates[$index]}k.m3u8"
 
     if [ "$OUTPUT_LIB" != "copy" ]; then
         bitrate_opt="-b:a ${sbitrates[$index]}k"
