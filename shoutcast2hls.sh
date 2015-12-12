@@ -33,6 +33,8 @@ Usage: ./shoutcast2hls.sh [options] <stream> where options are:
                                                           The default value is '64:128'
         -c <time>      | --chunk-time <time>            : Chunck time in seconds for each HLS element
                                                           The default value is '10'
+        -k <time>      | --keep-chunk <time>            : Get old chunck for 'x' minutes
+                                                          The default value is '1'
 
 Example:
         ./shoutcast2hls.sh -d /usr/share/nginx/html -f mp3 -n morow -b 64:128 http://stream.morow.com:8080/morow_hi.aacp
@@ -65,6 +67,7 @@ OUTPUT_DIRECTORY="/tmp"
 PLAYLIST_NAME="playlist"
 BITRATES="64:128"
 CHUNK_SIZE=10
+CHUNK_KEEP=1
 ####‡
 
 while [[ $# -gt 1 ]]; do
@@ -77,6 +80,10 @@ while [[ $# -gt 1 ]]; do
             ;;
         -f|--output-format)
             OUTPUT_FORMAT="$2"
+            shift # past argument
+            ;;
+        -k|--keep-chunk)
+            CHUNK_KEEP="$2"
             shift # past argument
             ;;
         -d|--output-directory)
@@ -128,6 +135,12 @@ if [[ $CHUNK_SIZE =~ ^-?[0-9]+$ && $CHUNK_SIZE > 0 ]]; then
     echo "Chunk time: $CHUNK_SIZE ok"
 else
     echo "$CHUNK_SIZE is not a valid chunk time number"
+fi
+
+if [[ $CHUNK_KEEP =~ ^-?[0-9]+$ && $CHUNK_KEEP > 0 ]]; then
+    echo "Keep the last $CHUNK_KEEP minute(s)"
+else
+    echo "$CHUNK_KEEP is not a valid time to keep chunk"
 fi
 
 IFS=':' read -a bitrates <<< "$BITRATES"
@@ -197,7 +210,7 @@ echo "+++ The playlist is available at ${final_playlist}"
 
 while true;
 do
-    sleep 60
-    echo "Removing files older than 1 minute"
-    find $OUTPUT_DIRECTORY -name \*.ts -mmin +1 -delete
+    sleep $(($CHUNK_KEEP * 60))
+    echo "Removing files older than $CHUNK_KEEP minute(s)"
+    find $OUTPUT_DIRECTORY -name \*.ts -mmin +$CHUNK_KEEP -delete
 done
