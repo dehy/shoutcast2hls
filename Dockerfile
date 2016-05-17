@@ -1,6 +1,12 @@
 FROM ubuntu:16.04
 MAINTAINER Arnaud de Mouhy <arnaud.demouhy@akerbis.com>
 
+ENV STREAM "http://stream.morow.com:8080/morow_hi.aacp"
+ENV OUTPUT_DIRECTORY "/usr/share/nginx/html"
+ENV FORMAT "aac"
+ENV PLAYLIST_NAME "morow"
+ENV BITRATES "32:64:128"
+
 RUN sed -i -e 's/\(universe\)$/\1 multiverse/g' /etc/apt/sources.list
 
 RUN apt-get update \
