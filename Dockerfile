@@ -1,17 +1,16 @@
-FROM ubuntu:15.04
+FROM ubuntu:16.04
 MAINTAINER Arnaud de Mouhy <arnaud.demouhy@akerbis.com>
 
 RUN sed -i -e 's/\(universe\)$/\1 multiverse/g' /etc/apt/sources.list
 
 RUN apt-get update \
- && apt-get -y upgrade \
- && apt-get -y install build-essential pkg-config yasm nginx \
+ && apt-get -y --no-install-recommends install build-essential pkg-config yasm nginx \
                        libfdk-aac0 libfdk-aac-dev libmp3lame0 libmp3lame-dev
 
-ADD https://www.libav.org/releases/libav-11.4.tar.gz /tmp/
+ADD https://www.libav.org/releases/libav-11.6.tar.gz /tmp/
 WORKDIR /tmp
-RUN tar xvf libav-11.4.tar.gz \
- && cd /tmp/libav-11.4 \
+RUN tar xvf libav-11.6.tar.gz \
+ && cd /tmp/libav-11.6 \
  && ./configure --disable-avplay \
             --disable-avserver \
             --enable-libfdk-aac \

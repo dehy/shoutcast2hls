@@ -11,6 +11,6 @@ shoutcast2hls:
 http:
     image: nginx
     ports:
-        - 80:80
+        - 80
     volumes_from:
         - shoutcast2hls
