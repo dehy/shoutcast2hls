@@ -30,7 +30,7 @@ Example:
 
 ### Docker
 
-    $ docker run -d -e "STREAM=http://stream.morow.com:8080/morow_hi.aacp" -e "OUTPUT_DIRECTORY=/usr/share/nginx/html" -e "FORMAT=mp3" -e "BITRATES=32:64:128" -e "PLAYLIST_NAME=morow" --name shoutcast2hls akerbis/shoutcast2hls
+    $ docker run -d -e "STREAM=http://stream.morow.com:8080/morow_hi.aacp" -e "OUTPUT_DIRECTORY=/usr/share/nginx/html" -e "FORMAT=aac" -e "BITRATES=32:64:128" -e "PLAYLIST_NAME=morow" --name shoutcast2hls akerbis/shoutcast2hls
     $ docker run -d -p 80:80 --volumes-from shoutcast2hls nginx:latest
 
 ### Docker Compose
