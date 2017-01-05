@@ -5,12 +5,12 @@ shoutcast2hls:
     environment:
         - "STREAM=http://stream.morow.com:8080/morow_hi.aacp"
         - "OUTPUT_DIRECTORY=/usr/share/nginx/html"
-        - "FORMAT=mp3"
+        - "FORMAT=aac"
         - "PLAYLIST_NAME=morow"
-        - "BITRATES=64:128"
+        - "BITRATES=32:64:128"
 http:
     image: nginx
     ports:
-        - 80:80
+        - 80
     volumes_from:
         - shoutcast2hls

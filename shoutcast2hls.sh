@@ -16,8 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-set -u
-set -e
+set -eu
 
 function print_usage {
     cat << EOF
@@ -30,7 +29,7 @@ Usage: ./shoutcast2hls.sh [options] <stream> where options are:
         -n <name>      | --name <name>                  : Output playlist name
                                                           The default value is 'playlist'
         -b <bitrates>  | --bitrates <bitrates>          : List of output bitrates expressed in kilobytes, separated by colons (:)
-                                                          The default value is '64:128'
+                                                          The default value is '32:64:128'
         -c <time>      | --chunk-time <time>            : Chunck time in seconds for each HLS element
                                                           The default value is '10'
         -k <time>      | --keep-chunk <time>            : Get old chunck for 'x' minutes
@@ -54,6 +53,12 @@ function is_program_exist() {
     fi
 }
 
+platform=`uname`
+if [ "$platform" == "Darwin" ]; then
+    echo "OS X is not yet supported"
+    exit 1;
+fi
+
 if [ $# -eq 0 ]; then
     print_usage
     exit 0
@@ -65,10 +70,10 @@ echo $0 $@
 OUTPUT_FORMAT="copy"
 OUTPUT_DIRECTORY="/tmp"
 PLAYLIST_NAME="playlist"
-BITRATES="64:128"
+BITRATES="32:64:128"
 CHUNK_SIZE=10
 CHUNK_KEEP=1
-####‡
+#####
 
 while [[ $# -gt 1 ]]; do
     key="$1"
@@ -193,6 +198,12 @@ do
 
     if [ "$OUTPUT_LIB" != "copy" ]; then
         bitrate_opt="-b:a ${sbitrates[$index]}k"
+    fi
+    if [ "$OUTPUT_LIB" == "libfdk_aac" -a "${sbitrates[$index]}" -lt "128" ]; then
+        bitrate_opt="${bitrate_opt} -profile:a aac_he"
+    fi
+    if [ "$OUTPUT_LIB" == "libfdk_aac" -a "${sbitrates[$index]}" -lt "48" ]; then
+        bitrate_opt="${bitrate_opt} -profile:a aac_he_v2"
     fi
 
     echo "New converter from $INPUT_STREAM to ${stream_playlist}…"
