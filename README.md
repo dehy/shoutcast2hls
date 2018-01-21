@@ -43,3 +43,8 @@ The playlist file is now available at http://server/morow.m3u8
 ## Tutum
 
 [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/akerbis/shoutcast2hls.git)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fakerbis%2Fshoutcast2hls.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fakerbis%2Fshoutcast2hls?ref=badge_shield)
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fakerbis%2Fshoutcast2hls.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fakerbis%2Fshoutcast2hls?ref=badge_large)
