@@ -175,8 +175,8 @@ case $OUTPUT_FORMAT in
 esac
 
 echo "Detecting bitrate for $INPUT_STREAM stream… (it may take a while)"
-is_program_exist "avprobe" "avprobe is not found. Please setup avprobe first"
-found_bitrate=$(avprobe -show_format $INPUT_STREAM < /dev/null 2> /dev/null | grep icy-br | cut -d= -f2)
+is_program_exist "ffprobe" "ffprobe is not found. Please setup ffprobe first"
+found_bitrate=$(ffprobe -show_format $INPUT_STREAM < /dev/null 2> /dev/null | grep icy-br | cut -d= -f2)
 if [ -z "$found_bitrate" ]; then
 echo "+ Cannot find the bitrate… Are you sure it is a Shoutcast stream ?"
 exit 1
@@ -210,8 +210,8 @@ do
     echo "+ Output format: $OUTPUT_FORMAT"
     echo "+ Output bitrate: ${sbitrates[$index]}k"
     echo "+ Output playlist file $stream_playlist"
-    is_program_exist "avconv" "avconv is not found. Please setup avconv first"
-    avconv -i "$INPUT_STREAM" -vn -sn -c:a $OUTPUT_LIB $bitrate_opt -hls_time $CHUNK_SIZE $stream_playlist 2> /dev/null &
+    is_program_exist "ffmpeg" "ffmpeg is not found. Please setup ffmpeg first"
+    ffmpeg -i "$INPUT_STREAM" -vn -sn -c:a $OUTPUT_LIB $bitrate_opt -hls_time $CHUNK_SIZE $stream_playlist 2> /dev/null &
 
     echo "#EXT-X-STREAM-INF:BANDWIDTH=${sbitrates[$index]}000" >> $final_playlist
     echo "$(basename ${stream_playlist})" >> $final_playlist
