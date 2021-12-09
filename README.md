@@ -30,7 +30,7 @@ Example:
 
 ### Docker
 
-    $ docker run -d -e "STREAM=http://stream.morow.com:8080/morow_hi.aacp" -e "OUTPUT_DIRECTORY=/usr/share/nginx/html" -e "FORMAT=aac" -e "BITRATES=32:64:128" -e "PLAYLIST_NAME=morow" --name shoutcast2hls akerbis/shoutcast2hls
+    $ docker run -d -e "STREAM=http://stream.morow.com:8080/morow_hi.aacp" -e "OUTPUT_DIRECTORY=/usr/share/nginx/html" -e "FORMAT=aac" -e "BITRATES=32:64:128" -e "PLAYLIST_NAME=morow" --name shoutcast2hls dehy/shoutcast2hls
     $ docker run -d -p 80:80 --volumes-from shoutcast2hls nginx:latest
 
 ### Docker Compose
@@ -42,4 +42,4 @@ The playlist file is now available at http://server/morow.m3u8
 
 ## Tutum
 
-[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/akerbis/shoutcast2hls.git)
+[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/dehy/shoutcast2hls.git)
